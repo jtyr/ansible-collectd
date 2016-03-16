@@ -4,8 +4,18 @@
   assert:
     that: ansible_os_family == "RedHat"
 
-- name: Install Collectd RPM package
-  yum:
+- name: Create Collectd yumrepo file
+  yum_repository:
+    name: collectd
+    description: Collectd YUM repo
+    baseurl: "{{ collectd_yumrepo_url }}"
+    gpgcheck: no
+    params: "{{ collectd_yumrepo_params }}"
+  tags:
+    - collectd_pkg
+
+- name: Install Collectd
+  package:
     name: "{{ collectd_pkg }}"
     state: present
   notify:
@@ -13,17 +23,17 @@
   tags:
     - collectd_pkg
 
-- name: Install additional Collectd plugin RPM package
-  yum:
+- name: Install additional Collectd plugins
+  package:
     name: "{{ item }}"
     state: present
-  with_items: collectd_pkg_plugins
+  with_items: "{{ collectd_pkg_plugins }}"
   notify:
     - Restart collectd service
   tags:
     - collectd_pkg
 
-- name: Configure CollectD
+- name: Configure Collectd
   template:
     src: collectd.conf.j2
     dest: "{{ collectd_config_path }}"
@@ -31,12 +41,6 @@
     - Restart collectd service
   tags:
     - collectd_config
-
-- name: Make sure collectd service is enabled and running
-  service:
-    name: collectd
-    enabled: yes
-    state: running
 
 - name: Configure custom types.db
   template:
@@ -61,3 +65,17 @@
     - Restart collectd service
   tags:
     - collectd_config
+
+- name: Make sure collectd service is enabled
+  service:
+    name: collectd
+    enabled: yes
+  tags:
+    - collectd_service
+
+- name: Make sure collectd service is running
+  service:
+    name: collectd
+    state: running
+  tags:
+    - collectd_service

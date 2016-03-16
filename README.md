@@ -12,8 +12,8 @@ more details.
 Please report any issues or send PR.
 
 
-Example
--------
+Examples
+--------
 
 ```
 ---
@@ -209,15 +209,17 @@ Example
               - tx:COUNTER:0:4294967295
 ```
 
-This role requires [Config Encoder
-Macros](https://github.com/picotrading/config-encoder-macros) which must be
-placed into the same directory as the playbook:
+This role requires [Config
+Encoders](https://github.com/jtyr/ansible/blob/jtyr-config_encoders/lib/ansible/plugins/filter/config_encoders.py)
+which must be configured in the `ansible.cfg` file like this:
 
 ```
-$ ls -1 *.yaml
-site.yaml
-$ git clone https://github.com/picotrading/config-encoder-macros.git ./templates/encoder
+[defaults]
+
+filter_plugins = ./plugins/filter/
 ```
+
+Where the `./plugins/filter/` containes the `config_encoders.py` file.
 
 
 Role variables
@@ -260,7 +262,7 @@ collectd_global_options_default:
     - Timeout:  "{{ collectd_global_options_default_timeout }}"
     - ReadThreads: "{{ collectd_global_options_default_readthreads }}"
     - AutoLoadPlugin: "{{ collectd_global_options_default_autoloadplugin }}"
-    - TypesDB: "{{ pico_collectd_global_options_default_typesdb }}"
+    - TypesDB: "{{ collectd_global_options_default_typesdb }}"
 
 
 # Syslog plugin
@@ -330,7 +332,7 @@ collectd_config:
 Dependencies
 ------------
 
-* [Config Encoder Macros](https://github.com/picotrading/config-encoder-macros)
+- [Config Encoders](https://github.com/jtyr/ansible/blob/jtyr-config_encoders/lib/ansible/plugins/filter/config_encoders.py)
 
 
 License

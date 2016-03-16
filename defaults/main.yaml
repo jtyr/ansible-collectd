@@ -1,5 +1,11 @@
 ---
 
+# Default yumrepo URL
+collectd_yumrepo_url: https://pkg.ci.collectd.org/rpm/collectd-5.5/epel-$releasever-$basearch/
+
+# Custom yumrepo params
+collectd_yumrepo_params: {}
+
 # Package to be installed (you can force a specific version here)
 collectd_pkg: collectd
 
@@ -36,7 +42,7 @@ collectd_global_options_default:
     - Timeout:  "{{ collectd_global_options_default_timeout }}"
     - ReadThreads: "{{ collectd_global_options_default_readthreads }}"
     - AutoLoadPlugin: "{{ collectd_global_options_default_autoloadplugin }}"
-    - TypesDB: "{{ pico_collectd_global_options_default_typesdb }}"
+    - TypesDB: "{{ collectd_global_options_default_typesdb }}"
 
 
 # Syslog plugin
