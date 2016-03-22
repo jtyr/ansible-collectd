@@ -77,5 +77,6 @@
   service:
     name: collectd
     state: running
+  register: collectd_service_started
   tags:
     - collectd_service
