@@ -2,7 +2,7 @@
 
 galaxy_info:
   author: Jiri Tyr
-  description: Role which installs CollectD
+  description: Role which installs CollectD.
   license: MIT
   min_ansible_version: 2.1
   platforms:
@@ -11,4 +11,5 @@ galaxy_info:
         - all
   categories:
     - monitoring
-dependencies: []
+dependencies:
+  - config_encoder_filters
